@@ -8,6 +8,9 @@
 
 간단한 웹 프로토타입으로, Tesseract.js를 사용해 이미지에서 텍스트(OCR)를 추출하고 React로 WOD(Workout of the Day)를 등록/조회할 수 있습니다.
 
+### Tipe
+- https://blog.jetbrains.com/idea/2025/05/coding-guidelines-for-your-ai-agents/
+
 ## 주요 기능
 - WOD 생성: 날짜 선택, 이미지 업로드(OCR), 텍스트 입력/수정 가능
 - 하루에 여러 개 WOD 기록 저장 가능
