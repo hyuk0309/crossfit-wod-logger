@@ -20,7 +20,7 @@
 ## 기술 스택
 - Vite + React 18
 - Tesseract.js (클라이언트 사이드 OCR)
-- 간단한 인라인 스타일 (Tailwind 미적용 — 향후 적용 가능)
+- 심플 다크 테마 전역 스타일(`src/styles.css`) 적용 (Tailwind 미적용 — 향후 적용 가능)
 
 ## 빠른 시작
 ```bash
