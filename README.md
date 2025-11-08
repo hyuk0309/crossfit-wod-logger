@@ -1,5 +1,11 @@
 # CrossFit WOD Logger (Prototype)
 
+## 프로젝트의 목적
+이 프로젝트의 목적은 '바이브 코딩(vibe coding)' 방식으로 가볍게 아이디어를 실험하고, 작은 토이 프로젝트를 끝까지 만들어보는 것입니다. 복잡한 설정보다 빠른 실행과 반복을 지향합니다.
+
+## 코드 어시스턴트
+이 프로젝트는 코드 어시스턴트 'Junnie'의 도움을 받아 개발되었습니다.
+
 간단한 웹 프로토타입으로, Tesseract.js를 사용해 이미지에서 텍스트(OCR)를 추출하고 React로 WOD(Workout of the Day)를 등록/조회할 수 있습니다.
 
 ## 주요 기능
@@ -56,4 +62,3 @@ npm run dev
 - 이미지 저장 경로 없음 → 서버 업로드/보관(Express/Nest) 구현 필요
 - 고급 OCR 필요 시 Google Vision / Naver Clova OCR 백엔드 연동 고려
 - 스타일링: Tailwind CSS 적용
-```
