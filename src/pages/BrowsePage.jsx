@@ -16,7 +16,7 @@ export default function BrowsePage({ wods, onUpdateWod, onRemoveWod, initialDate
   const [editingId, setEditingId] = useState(null)
 
   const wodsForDate = useMemo(
-    () => wods.filter((w) => w.date === selectedDate).sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt)),
+    () => wods.filter((w) => w.date === selectedDate),
     [wods, selectedDate]
   )
 
@@ -49,7 +49,7 @@ export default function BrowsePage({ wods, onUpdateWod, onRemoveWod, initialDate
               <article key={w.id} className="card" style={{ display: 'grid', gap: 8 }}>
                 <header className="row" style={{ alignItems: 'center' }}>
                   <div className="col">
-                    <strong>작성 시각:</strong> <span className="muted">{formatTime(w.createdAt)}</span>
+                    <strong>WOD ID:</strong> <span className="muted">{w.id}</span>
                   </div>
                   <div style={{ display: 'flex', gap: 8 }}>
                     <button className="btn secondary" onClick={() => startEdit(w.id)}>수정</button>
@@ -60,19 +60,15 @@ export default function BrowsePage({ wods, onUpdateWod, onRemoveWod, initialDate
                 {editingId === w.id ? (
                   <WodForm
                     initialDate={w.date}
-                    initialDescription={w.description}
-                    initialImageUrl={w.imageUrl}
-                    onSubmit={(edited) => handleUpdate({ ...edited, id: w.id, createdAt: w.createdAt })}
+                    initialContent={w.content}
+                    onSubmit={(edited) => handleUpdate({ ...edited, id: w.id })}
                     onCancel={cancelEdit}
                   />
                 ) : (
                   <details>
                     <summary>상세 보기</summary>
                     <div style={{ marginTop: 8, display: 'grid', gap: 8 }}>
-                      {w.imageUrl && (
-                        <img src={w.imageUrl} className="preview" alt="업로드 이미지" />
-                      )}
-                      <pre style={{ whiteSpace: 'pre-wrap', margin: 0 }}>{w.description}</pre>
+                      <pre style={{ whiteSpace: 'pre-wrap', margin: 0 }}>{w.content}</pre>
                     </div>
                   </details>
                 )}

@@ -14,22 +14,37 @@
 ## 주요 기능
 - WOD 생성: 날짜 선택, 이미지 업로드(OCR), 텍스트 입력/수정 가능
 - 하루에 여러 개 WOD 기록 저장 가능
-- 일별 목록 조회, 상세 보기(텍스트 전체/이미지), 수정/삭제
-- 현재는 클라이언트 메모리(useState)만 사용 (새로고침 시 데이터가 초기화됨)
+- 일별 목록 조회, 상세 보기, 수정/삭제
+- 데이터는 백엔드 서버의 SQLite 데이터베이스에 영구 저장됩니다.
 
 ## 기술 스택
-- Vite + React 18
-- Tesseract.js (클라이언트 사이드 OCR)
-- 심플 다크 테마 전역 스타일(`src/styles.css`) 적용 (Tailwind 미적용 — 향후 적용 가능)
+- **Frontend**: Vite + React 18
+- **Backend**: Node.js + Express
+- **Database**: SQLite
+- **OCR**: Tesseract.js (클라이언트 사이드)
+- **Styling**: 심플 다크 테마 전역 스타일 (`src/styles.css`)
 
 ## 빠른 시작
+프로젝트를 실행하려면 두 개의 터미널이 필요합니다.
+
+**터미널 1: 백엔드 서버 실행**
 ```bash
 # 의존성 설치
-npm i
+npm install
 
-# 개발 서버 실행
+# 백엔드 서버 시작
+npm run server
+# http://localhost:3001 에서 서버가 실행됩니다.
+```
+
+**터미널 2: 프론트엔드 개발 서버 실행**
+```bash
+# 의존성 설치 (이미 실행했다면 생략)
+npm install
+
+# 프론트엔드 개발 서버 시작
 npm run dev
-# 브라우저에서 http://localhost:5173 접속
+# 브라우저에서 http://localhost:5173 에 접속하세요.
 ```
 
 ## 사용 방법
@@ -51,23 +66,28 @@ npm run dev
 ├─ index.html
 ├─ package.json
 ├─ vite.config.js
+├─ server/
+│  ├─ index.js        # Express 서버, API 엔드포인트
+│  ├─ database.js     # SQLite 데이터베이스 초기화 및 연결
+│  └─ wods.db         # SQLite 데이터베이스 파일
 └─ src/
    ├─ main.jsx
-   ├─ App.jsx                 # 헤더/푸터 + 간단 네비게이션(홈/조회/등록) 및 in-memory 상태 보유
+   ├─ App.jsx         # 헤더/푸터 + 네비게이션, API 연동 상태 관리
+   ├─ api.js          # 프론트엔드 API 요청 모듈
    ├─ components/
-   │  ├─ ImageUploader.jsx    # 이미지 선택 + Tesseract.js OCR + 진행률 표시
-   │  └─ WodForm.jsx          # 날짜 + 텍스트 폼, ImageUploader 포함 (재사용)
+   │  ├─ ImageUploader.jsx
+   │  └─ WodForm.jsx
    └─ pages/
-      ├─ HomePage.jsx         # 랜딩(소개 + 버튼으로 페이지 이동)
-      ├─ BrowsePage.jsx       # 날짜별 목록 조회/상세/수정/삭제
-      └─ RegisterPage.jsx     # WOD 신규 등록 (저장 후 조회 페이지로 이동)
+      ├─ HomePage.jsx
+      ├─ BrowsePage.jsx
+      └─ RegisterPage.jsx
 ```
 
 ## 언어 데이터
 기본은 영어(`eng`) OCR을 사용합니다. 한국어 인식이 필요하면 Tesseract.js의 한국어 데이터(`kor`)를 추가 로딩하는 구성을 별도로 해주어야 합니다. (초기 프로토타입 범위 밖)
 
 ## 한계 및 다음 단계 제안
-- 현재 데이터는 브라우저 메모리만 사용 → `localStorage` 또는 백엔드 API/DB 연동(PostgreSQL/SQLite)로 확장
-- 이미지 저장 경로 없음 → 서버 업로드/보관(Express/Nest) 구현 필요
+- 이미지 저장 기능 없음 → 서버 업로드/보관(Express/Nest) 구현 필요
 - 고급 OCR 필요 시 Google Vision / Naver Clova OCR 백엔드 연동 고려
 - 스타일링: Tailwind CSS 적용
+- 사용자 인증 기능 추가
