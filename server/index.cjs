@@ -1,6 +1,6 @@
 const express = require('express');
 const cors = require('cors');
-const { openDb } = require('./database.js');
+const { openDb } = require('./database.cjs');
 
 const app = express();
 const port = process.env.PORT || 3001;
