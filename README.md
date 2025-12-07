@@ -88,6 +88,8 @@ npm run dev
 
 ## 한계 및 다음 단계 제안
 - 이미지 저장 기능 없음 → 서버 업로드/보관(Express/Nest) 구현 필요
+- 이미지 전처리 단계 추가해 OCR 성능 개선
+- 와드 작성자 인증 추가
 - 고급 OCR 필요 시 Google Vision / Naver Clova OCR 백엔드 연동 고려
 - 스타일링: Tailwind CSS 적용
 - 사용자 인증 기능 추가

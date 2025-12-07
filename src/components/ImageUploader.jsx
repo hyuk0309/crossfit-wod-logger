@@ -1,5 +1,6 @@
 import React, { useState, useRef } from 'react'
 import Tesseract from 'tesseract.js'
+import * as Jimp from 'jimp'
 
 /**
  * ImageUploader
@@ -15,36 +16,58 @@ export default function ImageUploader({ onExtract, onImageUrl, accept = 'image/*
   const [isRunning, setIsRunning] = useState(false)
   const inputRef = useRef(null)
 
-  const handleFileChange = async (e) => {
+  const handleFileChange = (e) => {
     const file = e.target.files?.[0]
     if (!file) return
 
     const url = URL.createObjectURL(file)
     setPreviewUrl(url)
     onImageUrl?.(url)
-
     setIsRunning(true)
     setStatus('이미지 분석 시작')
     setProgress(0)
-    try {
-      const { data } = await Tesseract.recognize(file, 'eng', {
-        logger: (m) => {
-          if (m.status) setStatus(m.status)
-          if (m.progress != null) setProgress(Math.round(m.progress * 100))
-        },
+
+    new Promise((resolve, reject) => {
+      const reader = new FileReader()
+      reader.onload = async (event) => {
+        try {
+          setStatus('이미지 전처리 중…')
+          const image = await Jimp.Jimp.read(event.target.result)
+          image.greyscale().contrast(0.5)
+
+          image.getBuffer(Jimp.Jimp.MIME_PNG, async (err, buffer) => {
+            if (err) return reject(err)
+
+            const { data } = await Tesseract.recognize(buffer, 'eng', {
+              logger: (m) => {
+                if (m.status) setStatus(m.status)
+                if (m.progress != null) setProgress(Math.round(m.progress * 100))
+              },
+            })
+            resolve(data)
+          })
+        } catch (err) {
+          reject(err)
+        }
+      }
+      reader.onerror = (err) => reject(err)
+      reader.readAsArrayBuffer(file)
+    })
+      .then((data) => {
+        const text = (data?.text || '').trim()
+        onExtract?.(text)
+        setStatus('완료')
+        setProgress(100)
       })
-      const text = (data?.text || '').trim()
-      onExtract?.(text)
-      setStatus('완료')
-      setProgress(100)
-    } catch (err) {
-      console.error(err)
-      setStatus('에러 발생')
-      onExtract?.('')
-      alert('OCR 처리 중 오류가 발생했습니다. 콘솔을 확인하세요.')
-    } finally {
-      setIsRunning(false)
-    }
+      .catch((err) => {
+        console.error(err)
+        setStatus('에러 발생')
+        onExtract?.('')
+        alert('OCR 처리 중 오류가 발생했습니다. 콘솔을 확인하세요.')
+      })
+      .finally(() => {
+        setIsRunning(false)
+      })
   }
 
   const handleReset = () => {
