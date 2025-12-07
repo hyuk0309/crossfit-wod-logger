@@ -1,5 +1,6 @@
 import React, { useState, useRef } from 'react'
 import Tesseract from 'tesseract.js'
+import Jimp from 'jimp/es'
 
 /**
  * ImageUploader
@@ -27,7 +28,12 @@ export default function ImageUploader({ onExtract, onImageUrl, accept = 'image/*
     setStatus('이미지 분석 시작')
     setProgress(0)
     try {
-      const { data } = await Tesseract.recognize(file, 'eng', {
+      setStatus('이미지 전처리 중…')
+      const image = await Jimp.read(await file.arrayBuffer())
+      image.grayscale().contrast(0.5)
+      const processedImageBuffer = await image.getBufferAsync(Jimp.MIME_PNG)
+
+      const { data } = await Tesseract.recognize(processedImageBuffer, 'eng', {
         logger: (m) => {
           if (m.status) setStatus(m.status)
           if (m.progress != null) setProgress(Math.round(m.progress * 100))
