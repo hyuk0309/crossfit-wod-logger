@@ -2,6 +2,8 @@ import React, { useState, useRef } from 'react'
 import Tesseract from 'tesseract.js'
 import * as Jimp from 'jimp'
 
+console.log('Jimp module:', Jimp)
+
 /**
  * ImageUploader
  * - Accepts image files
