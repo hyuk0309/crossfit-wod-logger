@@ -1,6 +1,6 @@
 import React, { useState, useRef } from 'react'
 import Tesseract from 'tesseract.js'
-import Jimp from 'jimp'
+import * as Jimp from 'jimp'
 
 /**
  * ImageUploader
