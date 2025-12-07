@@ -30,8 +30,7 @@ export default function ImageUploader({ onExtract, onImageUrl, accept = 'image/*
     try {
       setStatus('이미지 전처리 중…')
       const image = await Jimp.Jimp.read(await file.arrayBuffer())
-      console.log('Jimp image object:', image)
-      image.grayscale().contrast(0.5)
+      image.greyscale().contrast(0.5)
       const processedImageBuffer = await image.getBufferAsync(Jimp.Jimp.MIME_PNG)
 
       const { data } = await Tesseract.recognize(processedImageBuffer, 'eng', {
