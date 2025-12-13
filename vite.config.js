@@ -8,4 +8,7 @@ export default defineConfig({
     react(),
     nodePolyfills(),
   ],
+  define: {
+    '__dirname': JSON.stringify('/'),
+  },
 })
